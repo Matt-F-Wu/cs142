@@ -1,0 +1,26 @@
+<div>
+	<md-button class="md-accent md-raised" ng-href="#!{{main.adv_prefix}}/photos/{{user._id}}">View Photos</md-button>
+
+	<p id="info-title">{{user.first_name}} {{user.last_name}}'s Profile:</p>
+
+	<table class="user-info-table">
+		<tbody>
+			<tr>
+				<td>User ID:</td>
+				<td>{{user._id}}</td>
+			</tr>
+			<tr>
+				<td>From:</td>
+				<td>{{user.location}}</td>
+			</tr>
+			<tr>
+				<td>Description:</td>
+				<td>{{user.description}}</td>
+			</tr>
+			<tr>
+				<td>Occupation:</td>
+				<td>{{user.occupation}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

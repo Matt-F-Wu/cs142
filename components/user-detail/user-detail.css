@@ -1,0 +1,16 @@
+.user-info-table{
+	margin: 2%;	
+	border: 2px dashed #4CAF50;
+	border-radius: 10px;
+}
+
+td{
+	border-bottom: 1px solid silver;
+}
+
+#info-title{
+	color: #4CAF50;
+	margin: 2%;
+	font-size: 24pt;
+	font-weight: bold;
+}

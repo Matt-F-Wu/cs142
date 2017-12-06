@@ -1,0 +1,121 @@
+<div>
+    <md-content layout="row" layout-align="space-around" layout-padding="layout-padding" ng-cloak="ng-cloak" class="login-form">
+      <md-card flex="flex" flex-gt-sm="50" flex-gt-md="33">
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h2><span>Please Login</span></h2>
+          </div>
+        </md-toolbar>
+        <md-card-content>
+          <form name="Form">
+            <md-input-container class="md-block">
+              <label>Log-in name</label>
+              <input type="text" name="login_name" ng-model="formData.login_name" placeholder="login" required=""/>
+              <div ng-messages="Form.login_name.$error" role="alert" multiple="">
+                <div ng-message="required" class="my-message">Please enter your login name.</div>
+              </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+              <label>Password</label>
+              <input type="password" name="password" ng-model="formData.password" placeholder="password" required=""/>
+              <div ng-messages="Form.password.$error" role="alert" multiple="">
+                <div ng-message="required" class="my-message">Please enter your password.</div>
+                
+              </div>
+            </md-input-container>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+              <md-button class="md-accent" ng-click="wannaSignUp = !wannaSignUp">Wanna Sign Up?</md-button>
+            <md-button ng-disabled="!Form.$valid" ng-click="submit()" class="md-raised md-primary">&nbsp Login &nbsp</md-button>
+            </section>
+          </form>
+
+          <!--Sign Up Widget-->
+          <form ng-show="wannaSignUp" name="userForm" ng-submit="signUpSubmit()" novalidate>
+
+            <div class="md-primary">
+              <h2><span>Sign Up</span></h2>
+            </div>
+
+            <!--login_name, password * 2, first_name, last_name, location, description, occupation-->
+
+            <!-- login_name -->
+            <md-input-container class="md-block">
+            <div class="form-group" ng-class="{ 'has-error' : userForm.login_name.$invalid && !userForm.login_name.$pristine }">
+                <label>Login Name</label>
+                <input type="text" name="login_name" class="form-control" ng-model="signup.login_name" required>
+                <p ng-show="userForm.login_name.$invalid && !userForm.login_name.$pristine" class="help-block">Your login name is required.</p>
+            </div>
+            </md-input-container>
+
+            <!-- password 1 -->
+            <md-input-container class="md-block">
+            <div class="form-group" ng-class="{ 'has-error' : userForm.password1.$invalid && !userForm.password1.$pristine }">
+                <label>Password</label>
+                <input type="password" name="password1" class="form-control" ng-model="signup.password1" required>
+                <p ng-show="userForm.password1.$invalid && !userForm.password1.$pristine" class="help-block">You password is required.</p>
+            </div>
+            </md-input-container>
+
+            <!-- password 2 -->
+            <md-input-container class="md-block">
+            <div class="form-group" ng-class="{ 'has-error' : (userForm.password2.$invalid && !userForm.password2.$pristine ) 
+            || signup.password2 !== signup.password1}">
+                <label>Repeat Password</label>
+                <input type="password" name="password2" class="form-control" ng-model="signup.password2" required>
+                <p ng-show="userForm.password2.$invalid && !userForm.password2.$pristine" class="help-block">Please retype your password!</p>
+                
+                <p ng-show="(!userForm.password2.$pristine || !userForm.password1.$pristine) && signup.password2 !== signup.password1" class="help-block">Passwords don't match!</p>
+            </div>
+            </md-input-container>
+          
+            <!-- first_name -->
+            <md-input-container class="md-block">
+            <div class="form-group" ng-class="{ 'has-error' : userForm.first_name.$invalid && !userForm.first_name.$pristine }">
+                <label>First name</label>
+                <input type="text" name="first_name" class="form-control" ng-model="signup.first_name" required>
+                <p ng-show="userForm.first_name.$invalid && !userForm.first_name.$pristine" class="help-block">Your first name is required.</p>
+            </div>
+            </md-input-container>
+
+            <!-- last_name -->
+            <md-input-container class="md-block">
+            <div class="form-group" ng-class="{ 'has-error' : userForm.last_name.$invalid && !userForm.last_name.$pristine }">
+                <label>Last name</label>
+                <input type="text" name="last_name" class="form-control" ng-model="signup.last_name" required>
+                <p ng-show="userForm.last_name.$invalid && !userForm.last_name.$pristine" class="help-block">Your first name is required.</p>
+            </div>
+            </md-input-container>
+            
+            <!-- location -->
+            <md-input-container class="md-block">
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" name="location" class="form-control" ng-model="signup.location">
+            </div>
+            </md-input-container>
+
+            <!-- description -->
+            <md-input-container class="md-block">
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" name="description" class="form-control" ng-model="signup.description">
+            </div>
+            </md-input-container>
+
+            <!-- occupation -->
+            <md-input-container class="md-block">
+            <div class="form-group">
+                <label>occupation</label>
+                <input type="text" name="occupation" class="form-control" ng-model="signup.occupation">
+            </div>
+            </md-input-container>
+            
+            <md-button type="submit" class="md-raised md-primary" ng-disabled="userForm.$invalid">Sign Up</md-button>
+            
+        </form>
+        </md-card-content>
+      </md-card>
+    </md-content>
+    <!-- Angular Material Dependencies-->
+  
+</div>

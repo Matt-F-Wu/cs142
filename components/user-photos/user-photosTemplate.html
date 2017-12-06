@@ -1,0 +1,67 @@
+<div ng-show="!main.adv_enabled" ng-repeat="photo in photos">
+	<md-card>
+		<md-card-header>
+			<md-card-header-text>
+				{{photo.date_time | date : "y/MM/dd, HH:mm:ss" }}
+			</md-card-header-text>
+		</md-card-header>
+		<md-card-content>
+			<div class="insideWrapper">
+				<image ng-src="../../images/{{photo.file_name}}" class="coveredImage" width="{{photo.cWidth}}" height="{{photo.cHeight}}">
+				<div style="position: absolute; height: {{photo.cHeight + 'px'}}; width: {{photo.cWidth + 'px'}}" ng-repeat="tag in photo.tags" class="middleCanvas">
+					<div
+					style="border: 2px solid orange; position: absolute; height: {{tag.h*photo.cHeight + 'px'}}; width: {{tag.w*photo.cWidth + 'px'}}; top: {{tag.y*photo.cHeight + 'px'}}; left: {{tag.x*photo.cWidth + 'px'}}">
+					<div class="tagText">{{tag.text}}</div>
+					<md-button class="small-button" ng-click="removeTag(tag, photo)">Remove</md-button>
+					</div>
+				</div>
+				<canvas drawing="photo" class="coveringCanvas" width="{{photo.cWidth}}" height="{{photo.cHeight}}"></canvas>
+			</div>
+			<div ng-repeat="comment in photo.comments">
+				<div>
+				<a class="md-primary md-hue-1 comment-user-link" ng-href="#!/users/{{comment.user._id}}">{{comment.user.first_name}} {{comment.user.last_name}}
+				</a>
+				<p class="comment-text">: {{comment.comment}}</p> 
+				<p>{{comment.date_time | date : "y/MM/dd, HH:mm:ss" }}</p>
+				</div>
+			</div>
+		</md-card-content>
+		<md-input-container class="md-block">
+		  <form ng-submit="submit(photo._id)">
+          	  <label>New Comment</label>
+	          <input ng-model="photo.newComment">
+	          <md-button class="md-accent md-raised" type="submit">Post</md-button>
+		  </form>
+        </md-input-container>
+	</md-card>
+</div>
+
+<div ng-show="main.adv_enabled">
+	<md-card>
+		<md-card-header>
+			<md-card-header-text>
+				{{adv.photo.date_time}}
+			</md-card-header-text>
+		</md-card-header>
+		<img ng-src="../../images/{{adv.photo.file_name}}">
+		<md-card-actions layout="row" layout-align="space-between center">
+          <md-button ng-disabled="noPrev" class="md-raised md-accent" ng-href="photo-share.html#!/adv/photos/{{user._id}}/{{adv.prevP}}">Previous</md-button>
+          <md-button ng-disabled="noNext" class="md-raised md-accent" ng-href="photo-share.html#!/adv/photos/{{user._id}}/{{adv.nextP}}">Next</md-button>
+        </md-card-actions>
+		<md-card-content ng-repeat="comment in adv.photo.comments">
+			<div>
+				<a class="md-primary md-hue-1 comment-user-link" ng-href="#!/adv/users/{{comment.user._id}}">{{comment.user.first_name}} {{comment.user.last_name}}
+				</a>
+				<p class="comment-text">: {{comment.comment}} {{comment.date_time | date : "y/MM/dd, HH:mm:ss" }}<p>
+			</div>
+		</md-card-content>
+		<md-input-container class="md-block">
+		  <form ng-submit="submit(adv.photo._id)">
+          	  <label>New Comment</label>
+	          <input ng-model="newComment">
+	          <md-button class="md-accent md-raised" type="submit">Post</md-button>
+		  </form>
+        </md-input-container>
+	</md-card>
+</div>
+

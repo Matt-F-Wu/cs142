@@ -1,0 +1,19 @@
+<md-list flex ng-repeat="p_c in p_c_list">
+	<md-list-item ng-href="#!{{main.adv_prefix}}/photos/{{p_c.photo_owner_id}}/{{p_c.photo_id}}" layout="row">
+		<div>
+			<md-card md-theme-watch>
+		        <md-card-title>
+
+		        	<md-card-content>
+		            <div style="width: 100px; display: inline-block;">
+		            	<img width="100px" ng-src="../../images/{{p_c.photo}}">
+		            </div>
+		          	
+		          	<p class="comment-text"> {{p_c.comment.comment}}  {{p_c.comment.date_time | date : "y/MM/dd, HH:mm:ss"}}<p>
+		          	</md-card-content>
+
+		        </md-card-title>
+	      </md-card>	
+		</div>
+	</md-list-item>
+</md-list>

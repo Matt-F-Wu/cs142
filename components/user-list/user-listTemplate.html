@@ -1,0 +1,16 @@
+<md-list flex ng-repeat="user in users">
+	<md-list-item ng-href="#!{{main.adv_prefix}}/users/{{user._id}}" layout="row">
+	<p class="userNav">{{user.first_name}} {{user.last_name}}</p>
+	
+	<span ng-show="main.adv_enabled">
+		<md-button class="md-raised md-primary small-button" aria-label="All photos" ng-href="#!{{main.adv_prefix}}/photos/{{user._id}}">
+	        <md-icon md-svg-src="/components/user-list/ic_photo.svg"></md-icon><font class="count_num">{{user.photoNum}}</font>
+	    </md-button>
+
+	    <md-button class="md-raised md-accent small-button" aria-label="All comments" ng-href="#!{{main.adv_prefix}}/comments/{{user._id}}">
+	      <md-icon md-svg-src="/components/user-list/ic_chat.svg"></md-icon><font class="count_num">{{user.commentNum}}</font>
+	    </md-button>
+	</span>
+
+	</md-list-item>
+</md-list>

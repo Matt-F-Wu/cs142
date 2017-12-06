@@ -1,0 +1,40 @@
+.comment-text{
+	display:inline;
+}
+
+.comment-user-link{
+	text-decoration: none;
+}
+
+.insideWrapper{
+	width: 100%;
+    position: relative;
+}
+.coveredImage{
+	width: 100%;
+    position:relative; top:0px; left:0px;
+    
+}
+.coveringCanvas{  
+    position:absolute; top:0px; left:0px;
+    
+}
+
+.middleCanvas{  
+    position:absolute; top:0px; left:0px;
+    
+    display: inline-block;
+}
+
+.tagText{
+	background-color: rgba(0, 0, 0, 0.6);
+	color: white;
+}
+.small-button {
+    min-width: 1%;
+    font-size: 8pt;
+    color: orange;
+    top: 100%;
+    position: absolute;
+    z-index: 100;
+}

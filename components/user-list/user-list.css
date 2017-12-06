@@ -1,0 +1,13 @@
+.userNav{
+	color: #4CAF50;
+	display: inline;
+}
+
+.count_num{
+	font-weight: bold;
+}
+
+.small-button{
+	width: 50px;
+	min-width: 1%;
+}

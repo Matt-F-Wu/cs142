@@ -41,6 +41,7 @@ var processFormBody = multer({storage: multer.memoryStorage()}).single('uploaded
 var User = require('./schema/user.js');
 var Photo = require('./schema/photo.js');
 var SchemaInfo = require('./schema/schemaInfo.js');
+var Mention = require('./schema/mention.js');
 var fs = require("fs");
 var express = require('express');
 var app = express();
@@ -80,6 +81,40 @@ app.use(function(request, response, next){
         next();
     }
     
+});
+
+app.get('/mention/:user_id', function (request, response) {
+    var user_id = request.params.user_id;
+    Mention.find({user_id: user_id})
+    .exec(function(err, mentions){
+        if(err){
+            response.status(400).send('Server error');
+            return;
+        }
+        if (!mentions) {
+            response.status(200).send('No mentions are found!');
+            return;
+        }
+        response.status(200).send(mentions);
+    });
+});
+
+app.post('/mention', function (request, response) {
+    var mentions = request.body.mentions;
+    var mentionPromises = mentions.map(function (mention){
+        return Mention.create(mention, function (err, mentionObj) {
+            if (err) {
+                console.error('Error create photo', err);
+                
+            } else {
+                console.log('Adding mentions');
+                
+            }
+        });
+    });
+    Promise.all(mentionPromises).then(function(value){
+        response.status(200).send('mentions saved');
+    });
 });
 
 app.get('/', function (request, response) {

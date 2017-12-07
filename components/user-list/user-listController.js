@@ -16,11 +16,12 @@ cs142App.controller('UserListController', ['$scope', '$routeParams', '$resource'
                     resource = $resource('/user/list',undefined,{get: {method: 'get', isArray: true}});
                 }
                 resource.get({}, function(data){
-                    $rootScope.users = data;
+                    $scope.main.users = data;
+                    console.log("Here: " + $scope.main.users);
                 });
             }else{
                 //remove user list
-                delete $rootScope.users;
+                delete $scope.main.users;
             }
         }
 

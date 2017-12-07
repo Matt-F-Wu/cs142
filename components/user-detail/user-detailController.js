@@ -18,6 +18,11 @@ cs142App.controller('UserDetailController', ['$scope', '$routeParams', '$resourc
       $scope.main.displaying = $scope.user.first_name + ' ' + $scope.user.last_name;
     });
 
+    resource = $resource('/mention/:user_id',undefined,{get: {method: 'get', isArray: true}});
+    resource.get({user_id: userId}, function(data){
+      $scope.mentions = data;
+    });
+
     $scope.buttonText = 'See Photos';
     //console.log('window.cs142models.userModel($routeParams.userId)', window.cs142models.userModel(userId));
     $scope.toggleContent = function(){

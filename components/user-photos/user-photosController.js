@@ -1,7 +1,7 @@
 'use strict';
 
-cs142App.controller('UserPhotosController', ['$scope', '$routeParams', '$resource', '$timeout',
-  function($scope, $routeParams, $resource, $timeout) {
+cs142App.controller('UserPhotosController', ['$scope', '$routeParams', '$resource', '$timeout', '$mdDialog', 'mentioUtil',
+  function($scope, $routeParams, $resource, $timeout, $mdDialog, mentioUtil) {
     /*
      * Since the route is specified as '/photos/:userId' in $routeProvider config the
      * $routeParams  should have the userId property set with the path from the URL.
@@ -15,6 +15,11 @@ cs142App.controller('UserPhotosController', ['$scope', '$routeParams', '$resourc
       $scope.main.adv_prefix = "adv";
     }
     $scope.adv = {};
+
+    //for @mentions
+    $scope.people = [];
+
+    console.log($scope.main.users);
 
     $scope.counter = 0;
 
@@ -41,6 +46,22 @@ cs142App.controller('UserPhotosController', ['$scope', '$routeParams', '$resourc
         for(var i = 0; i < $scope.photos.length; i++){
           if($scope.photos[i]._id === p_id){
             //Found the photo that this comment is for
+            
+            var mentArr = processComment($scope.photos[i]);
+            if(mentArr === null) {
+              //some @ mentions were wrong
+              return;
+            }if(mentArr !== []){
+              //save mentions on server
+              resource = $resource('/mention');
+              resource.save({mentions: mentArr}, function(data){
+                    //Don't do anything
+                  }, 
+                  function(err){
+                    //How do we handle this?
+                  }
+              );
+            }
             newComment = $scope.photos[i].newComment;
             $scope.photos[i].newComment = '';
             console.log(newComment);
@@ -151,5 +172,94 @@ cs142App.controller('UserPhotosController', ['$scope', '$routeParams', '$resourc
         fetchPhotos();
       }
     });
+
+    $scope.searchPeople = function(term) {
+        console.log("What is happening?");
+        var peopleList = [];
+        angular.forEach($scope.main.users, function(person) {
+            if (person.first_name.toUpperCase().indexOf(term.toUpperCase()) >= 0 || person.last_name.toUpperCase().indexOf(term.toUpperCase()) >= 0) {
+                peopleList.push(person);
+            }
+        });
+        $scope.people = peopleList;
+        return peopleList;
+    };
+
+    $scope.getTagTextRaw = function(user) {
+        console.log('returning shit');
+        return '@' + user.first_name + ' ' + user.last_name;
+    };
+
+    function processComment(photo){
+      var i, j;
+      var findMentions = /@\w+ \w+/i;
+      var resArr = [];
+      var mentArr = photo.newComment.match(findMentions);
+      if(!mentArr){
+        //There is no @mentions
+        console.log("what the heck?");
+        if(photo.newComment.match(/@\w+/i)){
+          //incomplete mention, show error:
+          $mdDialog.show(
+            $mdDialog.alert()
+              .clickOutsideToClose(true)
+              .title('Error')
+              .textContent("@Metioned user does not exist! Use full name please!")
+              .ok('Got it!')
+          );
+          return null;
+        }else{
+          return [];
+        }
+      }
+      for(i = 0; i<mentArr.length; i++){
+        //remove the at sign
+        var name = mentArr[i].slice(1).split(" ");
+        if (name.length < 2){
+          return null;
+        }
+        var found = false;
+        for(j = 0; j < $scope.main.users.length; j++){
+          if ($scope.main.users[j].first_name.toUpperCase() === name[0].toUpperCase() &&
+           $scope.main.users[j].last_name.toUpperCase() === name[1].toUpperCase()) {
+              //found something, this is a valid @ mention
+              found = true;
+              //turn first letter to capitalized for easy processing later on
+              var fixCap = '@' + toTitleCase(name[0]) + ' ' + toTitleCase(name[1]);
+              //add to resArr
+              resArr.push({user_id: $scope.main.users[j], 
+                text: fixCap, 
+                photo_id: photo._id,
+                photo_owner: photo.user_id, 
+                photo_name: photo.file_name,
+                user_first_name: $scope.user.first_name,
+                user_last_name: $scope.user.last_name});
+              photo.newComment = photo.newComment.replace(mentArr[i], fixCap);
+          }
+        }
+
+        if(!found){
+          //remove the wrond tag
+          photo.newComment = photo.newComment.replace(mentArr[i], "");
+          $mdDialog.show(
+            $mdDialog.alert()
+              .clickOutsideToClose(true)
+              .title('Error')
+              .textContent("User: " + mentArr[i] + " does not exist! Removed @mention!")
+              .ok('Got it!')
+          );
+          return null;
+        }
+
+      }
+      return resArr;
+    }
+
+    function toTitleCase(str){
+      return str.replace(/\w\S*/g, 
+        function(txt){
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
 
   }]);

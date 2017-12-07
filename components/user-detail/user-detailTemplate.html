@@ -23,4 +23,13 @@
 			</tr>
 		</tbody>
 	</table>
+	<div ng-repeat="mention in mentions">
+		<div layout="column">
+			<a ng-href="#!/photos/{{mention.photo_owner}}?scrollTo={{mention.photo_id}}">
+			<image ng-src="../../images/{{mention.photo_name}}" style="border-radius: 50%; width: 100px; height: 100px" />
+			</a>
+		
+			<a ng-href="#!/users/{{mention.user._id}}">{{mention.user_first_name}} {{mention.user_last_name}}</a>
+		</div>
+	</div>
 </div>

@@ -1,6 +1,6 @@
 'use strict';
 
-var cs142App = angular.module('cs142App', ['ngRoute', 'ngMaterial', 'ngResource']).config(function($mdThemingProvider) {
+var cs142App = angular.module('cs142App', ['ngRoute', 'ngMaterial', 'ngResource', 'mentio']).config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('green').accentPalette('orange');
 });
@@ -282,7 +282,8 @@ cs142App.directive("drawing", ['$resource', '$mdDialog', function($resource, $md
               photo.tags.push(tag);
 
               res.save({tag: tag}, function(data){
-                  //Don't do anything
+                  //clean canvas
+                  reset();
                   console.log('Saved tags');
                 }, 
                 function(err){
@@ -310,4 +311,12 @@ cs142App.directive("drawing", ['$resource', '$mdDialog', function($resource, $md
     }
   };
 }]);
+
+cs142App.run(function($rootScope, $location, $anchorScroll, $routeParams) {
+  //when the route is changed scroll to the proper element.
+  $rootScope.$on('$routeChangeSuccess', function(newRoute, oldRoute) {
+    $location.hash($routeParams.scrollTo);
+    $anchorScroll();  
+  });
+});
 

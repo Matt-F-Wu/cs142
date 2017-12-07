@@ -1,5 +1,5 @@
 .comment-text{
-	display:inline;
+	display:inline;    
 }
 
 .comment-user-link{
@@ -37,4 +37,35 @@
     top: 100%;
     position: absolute;
     z-index: 100;
+}
+
+.user-search {
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    border-radius: 6px;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    background-clip: padding-box;
+    outline: 0;
+    color: white;
+    background-color: orange;
+    border-color: orange;
+    list-style-type:none;
+    width: 200px;
+}
+
+.user-search .list-group-item {
+    padding: 5px;
+}
+
+.user-search:hover {
+    cursor: pointer;
+}
+
+.fake-input {
+    width: 100%;
+    height: 50px;
+}
+
+mentio-menu{
+    display: block;
 }

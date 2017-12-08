@@ -258,40 +258,65 @@ cs142App.directive("drawing", ['$resource', '$mdDialog', function($resource, $md
       });
       element.bind('mouseup', function(event){
         // stop drawing
+        function DialogController($scope, $mdDialog, res, users, tag, photo) {
+              $scope.users = users;
+              $scope.closeDialog = function() {
+                $mdDialog.hide();
+              };
+              $scope.tagComplete = function(){
+                tag.user_id = $scope.selectedItem._id;
+                tag.text = $scope.selectedItem.first_name + ' ' + $scope.selectedItem.last_name;
+                photo.tags.push(tag);
+
+                res.save({tag: tag}, function(data){
+                    //clean canvas
+                    reset();
+                    console.log('Saved tags');
+                  }, 
+                  function(err){
+                    //How do we handle this?
+                  }
+                );
+                $mdDialog.hide();
+              };
+            }
         drawing = false;
         console.log(photo);
         if(photo){
-            var addPrompt = $mdDialog.prompt()
-              .title('Add your tag: ')
-              .placeholder('Type...')
-              .required(true)
-              .ok('Add').cancel('Cancel');
+          //set up resources for dialog
+          var res = $resource('/tag/:photo_id', {photo_id: photo._id});
+          var tag = {
+            x: firstX/photo.cWidth,
+            y: firstY/photo.cHeight,
+            w: (lastX - firstX)/photo.cWidth,
+            h: (lastY - firstY)/photo.cHeight,
+          };
 
-            $mdDialog.show(addPrompt).then(function(result) {
-              console.log(photo);
-
-              var res = $resource('/tag/:photo_id', {photo_id: photo._id});
-              var tag = {
-                x: firstX/photo.cWidth,
-                y: firstY/photo.cHeight,
-                w: (lastX - firstX)/photo.cWidth,
-                h: (lastY - firstY)/photo.cHeight,
-                text: result
-              };
-
-              photo.tags.push(tag);
-
-              res.save({tag: tag}, function(data){
-                  //clean canvas
-                  reset();
-                  console.log('Saved tags');
-                }, 
-                function(err){
-                  //How do we handle this?
-                }
-              );
-            }, function() {
-              //do nothing
+          $mdDialog.show({
+               parent: angular.element(document.body),
+               template:
+                 '<md-dialog aria-label="List dialog">' +
+                 '  <md-dialog-content> <p style="color: orange; margin: 5px;">Type his/her name</p>'+
+                 '   <md-autocomplete style="border: 1px solid orange" md-no-cache="true" md-selected-item="selectedItem" md-items="user in users" md-search-text="searchText" md-item-text="user.first_name + \' \' + user.last_name">' +
+                 '     <span>{{ user.first_name }} {{user.last_name}}</span>' +
+                 '   </md-autocomplete>' +
+                 '  </md-dialog-content>' +
+                 '  <md-dialog-actions>' +
+                 '    <md-button ng-click="closeDialog()" class="md-primary">' +
+                 '      Cancel' +
+                 '    </md-button>' +
+                 '    <md-button ng-click="tagComplete()" class="md-primary">' +
+                 '      Tag' +
+                 '    </md-button>' +
+                 '  </md-dialog-actions>' +
+                 '</md-dialog>',
+               locals: {
+                 users: scope.main.users,
+                 tag: tag,
+                 res: res,
+                 photo: photo,
+               },
+               controller: DialogController
             });
         }
       });
@@ -319,4 +344,5 @@ cs142App.run(function($rootScope, $location, $anchorScroll, $routeParams) {
     $anchorScroll();  
   });
 });
+
 

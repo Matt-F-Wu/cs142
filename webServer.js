@@ -220,9 +220,9 @@ app.post('/tag/:photo_id', function(request, response){
             
             var i, exist = -1;
             for(i=0; i < photo.tags.length; i++){
-                if(photo.tags[i].x === n_tag.x && photo.tags[i].y === n_tag.y
-                    && photo.tags[i].w === n_tag.w && photo.tags[i].h === n_tag.h
-                    && photo.tags[i].text === n_tag.text){
+                if(photo.tags[i].x === n_tag.x && photo.tags[i].y === n_tag.y &&
+                 photo.tags[i].w === n_tag.w && photo.tags[i].h === n_tag.h &&
+                 photo.tags[i].text === n_tag.text){
                     exist = i;
                 }
             }

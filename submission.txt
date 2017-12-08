@@ -5,17 +5,26 @@ Please fill in this form and submit it with your project #8.
 Enter no more than 5 user stories that you did for the assignment that you would like to be
 graded on. For each story include the following information:
 
-Story number and name:
-Story points:
-Brief description to see the story in action:
+Story number and name: 9 Tagging Photos
+Story points: 10
+Brief description to see the story in action: Simply click and drag a rectangle on any image, then there will be a popup asking you to enter what you want to tag. After you enter the first letter on the popup's input field, autocomplete will kick in and allow you to select from a bunch of user names. You can also remove a tag by clicking the remove floating below each tag.
 
-Total Story Points:
+Story number and name: 2 @mentions in comments
+Story points: 6
+Brief description to see the story in action: Type a @ character, and there will be an orange list of potential usernames for you to select. You can see all the photos where you are mentioned at your detail page.
+
+Story number and name: Photo like votes
+Story points: 4
+Brief description to see the story in action: If you haven't liked a photo, clicking the like button and you will see the like count goes up by 1, as well as "*You liked this photo"! Now the button will change to UNLIKE, and clicking it will remove your like.
+
+Total Story Points: 20
 
 Marketing Video URL (ensure permissions are set to public viewing):
+https://youtu.be/PuC0bIyfxRA
 
-Is it OK with you if we post your Marketing Video URL on the class discussion forum?
+Is it OK with you if we post your Marketing Video URL on the class discussion forum? Yes
 
-Any special instructions for Grading (should be easy to run app from new machine):
+Any special instructions for Grading (should be easy to run app from new machine): Not really, I removed the images and node_modules tho. And mentio.js, which is an external library I downloaded caused some jshint error (becaused I downloaded a mini version, and it's not in node_modules).
 
 
 ************************************ Example *******************

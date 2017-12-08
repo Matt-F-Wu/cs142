@@ -123,6 +123,20 @@ cs142App.controller('UserPhotosController', ['$scope', '$routeParams', '$resourc
       resource.get({userId: userId}, function(data){
         var i, p;
         $scope.photos = data;
+        //sort the photos by likes, then break ties by timestamp
+        $scope.photos.sort(function(a, b){
+          if(a.likes.length === b.likes.length){
+            //break ties, sort by time stamp
+            
+            if(Date.parse(b.date_time) > Date.parse(a.date_time)){
+              return 1;
+            }else{
+              return -1;
+            }
+          }else{
+            return b.likes.length - a.likes.length;
+          }
+        });
         if($scope.main.adv_enabled){
           //show the second layout
           for(i = 0; i < $scope.photos.length; i++){
@@ -294,6 +308,6 @@ cs142App.controller('UserPhotosController', ['$scope', '$routeParams', '$resourc
         }
       );
 
-    }
+    };
 
   }]);

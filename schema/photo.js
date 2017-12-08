@@ -24,6 +24,7 @@ var tagSchema = new mongoose.Schema({
     w: Number,
     h: Number,
     text: String,
+    user_id: mongoose.Schema.Types.ObjectId,
 });
 
 // create a schema for Photo

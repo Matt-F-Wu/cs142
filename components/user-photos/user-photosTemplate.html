@@ -12,18 +12,18 @@
 				<div style="position: absolute; height: {{photo.cHeight + 'px'}}; width: {{photo.cWidth + 'px'}}" ng-repeat="tag in photo.tags" class="middleCanvas">
 					<div
 					style="border: 2px solid orange; position: absolute; height: {{tag.h*photo.cHeight + 'px'}}; width: {{tag.w*photo.cWidth + 'px'}}; top: {{tag.y*photo.cHeight + 'px'}}; left: {{tag.x*photo.cWidth + 'px'}}">
-					<div class="tagText">{{tag.text}}</div>
+					<md-button class="tagText" ng-href="#!/users/{{tag.user_id}}">{{tag.text}}</md-button>
 					<md-button class="small-button" ng-click="removeTag(tag, photo)">Remove</md-button>
 					</div>
 				</div>
 				<canvas drawing="photo" class="coveringCanvas" width="{{photo.cWidth}}" height="{{photo.cHeight}}"></canvas>
 			</div>
-			<div layout="row" style="width: 20%">
-				<md-button class="md-raised md-primary" aria-label="All photos" ng-click="toggleLike(photo)">
+			<div layout="row">
+				<md-button class="md-raised md-primary" aria-label="All photos" ng-click="toggleLike(photo)" style="width: 15%">
 			        <md-icon md-svg-src="/components/user-photos/ic_thumb_up.svg"></md-icon>
 			        {{photo.likes && photo.likes.indexOf(user._id) >=0 ? 'Unlike' : 'Like'}}
 			    </md-button>
-			    <p style="color: green;">{{photo.likes.length}}</p>
+			    <p style="color: green;">{{photo.likes.length}} {{photo.likes && photo.likes.indexOf(user._id) >=0 ? '*You liked this photo!' : ''}}</p>
 			</div>
 			<div ng-repeat="comment in photo.comments">
 				<div>

@@ -166,9 +166,48 @@ app.post('/admin/logout', function(request, response){
 });
 
 // Add tag to photo of photo_id
+app.post('/likes/:photo_id', function(request, response){
+    //I am just gonna update all the likes at once
+    console.log("hello!");
+    var p_id = request.params.photo_id;
+    var n_likes = request.body.likes;
+    Photo.findOne({_id: p_id}).exec(
+        function(err, photo){
+            if (photo === null) {
+                console.log('Photo with _id:' + p_id + ' not found.');
+                response.status(400).send('Photo with _id:' + p_id + ' not found.');
+                return;
+            }
+
+            if(err){
+                response.status(400).send('Server Error!');
+                return;   
+            }
+
+            //update with new likes array
+            photo.likes.splice(0, photo.likes.length);
+            var i;
+            for(i = 0; i < n_likes.length; i++){
+                photo.likes.push(n_likes[i]);
+            }
+
+            console.log(photo.likes);
+            
+            photo.save(function (err) {
+              if (err) {
+                console.log(err.toString());
+              }
+              // saved!
+            });
+            
+            response.status(200).send("success");
+        }
+    );
+});
+
+// Add tag to photo of photo_id
 app.post('/tag/:photo_id', function(request, response){
     //Do I really need to delete the properties?
-    console.log("hello!");
     var p_id = request.params.photo_id;
     var n_tag = request.body.tag;
     Photo.findOne({_id: p_id}).exec(
@@ -201,6 +240,7 @@ app.post('/tag/:photo_id', function(request, response){
         }
     );
 });
+
 
 app.post('/user', function(request, response){
     //Do I really need to delete the properties?
@@ -512,7 +552,7 @@ app.get('/comments/:id', function (request, response) {
 
 app.get('/photosOfUser/:id', function (request, response) {
     var id = request.params.id;
-    Photo.find({user_id: id}).select("_id user_id comments file_name date_time tags")
+    Photo.find({user_id: id}).select("_id user_id comments file_name date_time tags likes")
     .exec(function(err, photos){
         if (!photos || photos.length === 0) {
             console.log('Photos for user with _id:' + id + ' not found.');

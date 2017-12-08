@@ -262,4 +262,38 @@ cs142App.controller('UserPhotosController', ['$scope', '$routeParams', '$resourc
         });
     }
 
+    $scope.toggleLike = function(photo){
+      var likes = photo.likes;
+      
+      if(!likes){
+        //likes is undefined, [] or null
+        likes = [];
+      }
+      //if the user already liked the photo
+      var index = likes.indexOf($scope.user._id);
+      console.log(index);
+      if(index >= 0){
+        likes.splice(index, 1);
+      }else{
+        //user hasn't liked, add to likes
+        likes.push($scope.user._id);
+      }
+
+      photo.likes = likes;
+
+      console.log(likes);
+
+      var res = $resource('/likes/:photo_id', {photo_id: photo._id}, { save: { method: 'POST', isArray: true } });
+
+      res.save({likes: likes}, function(data){
+          //Don't do anything
+          console.log('Done!');
+        }, 
+        function(err){
+          //How do we handle this?
+        }
+      );
+
+    }
+
   }]);
